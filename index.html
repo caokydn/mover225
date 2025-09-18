@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Junior English - Nghe chọn hình</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body {
+  font-family: Comic Sans MS, sans-serif;
+  background: linear-gradient(135deg,#fcd5ce,#fef9c3);
+  overflow-x:hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+}
+#brand{
+  width:100%;
+  text-align:center;
+  font-size:1.5em;
+  color:#6b5b95;
+  background:linear-gradient(90deg,#fcd5ce,#fef9c3);
+  padding:10px 0;
+  font-weight:bold;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Welcome Screen */
+#welcomeScreen {
+  position:absolute;
+  top:0; left:0; width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column;
+  background:linear-gradient(135deg,#fcd34d,#fbbf24);
+  z-index:10;
+}
+#welcomeScreen h2{
+  font-size:3em;
+  color:#f472b6;
+  margin-bottom:20px;
+  text-align:center;
+}
+#welcomeScreen input{
+  padding:12px; font-size:20px; border-radius:12px; border:2px solid #ccc; margin-bottom:20px; width:250px; text-align:center;
+}
+#welcomeScreen button{
+  padding:15px 40px; font-size:20px; border:none; border-radius:12px;
+  background:linear-gradient(90deg,#38bdf8,#0ea5e9); color:#0f172a; font-weight:bold; cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  transition:0.3s;
+}
+#welcomeScreen button:hover{transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.4);}
+
+/* Game Area */
+#gameArea{
+  display:none;
+  width:100%; max-width:700px;
+background: linear-gradient(135deg,#fcd5ce,#fef9c3);
+
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  color:#1f2937;
+  text-align:center;
+}
+#scoreBoard{font-size:24px; color:#d946ef; margin-bottom:10px; font-weight:bold;}
+#listenBtn{
+  margin-bottom:15px;
+  padding:10px 25px;
+  font-size:18px;
+  background:#34d399; color:#0f172a; border-radius:12px; font-weight:bold; cursor:pointer;
+}
+#listenBtn:hover{background:#22c55e; transform:translateY(-2px);}
+#imageOptions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cột tự co giãn */
+  gap: 20px;
+  margin-top: 15px;
+  width: 100%;
+  max-width: 400px; /* Giữ bố cục gọn gàng */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+.img-btn {
+  height: 150px;        /* Giữ chiều cao cố định */
+  width: 100%;          /* Tự co chiều rộng theo grid */
+  display: flex;
+  flex-direction: column; /* <--- thêm dòng này */
+
+  align-items: center;
+  justify-content: center;
+  border: 5px solid #ffcc00;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+
+.img-btn img {
+  max-height: 100%;       /* Không vượt quá chiều cao box */
+  width: auto;            /* Chiều rộng tự co giãn */
+  object-fit: contain;    /* Giữ tỉ lệ ảnh */
+  border-radius: 10px;
+  display: block;
+}
+
+
+.img-btn.correct{border:5px solid green;}
+.img-btn.wrong{opacity:0.3;}
+.img-btn:hover{transform:scale(1.05);}
+.wordLabel{margin-top:5px;font-size:18px;color:#1f2937; font-weight:bold;}
+#message{margin-top:20px;font-size:24px;font-weight:bold; min-height:30px;}
+
+/* Glow animation */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px #f472b6, 0 0 20px #f472b6; }
+  25% { box-shadow: 0 0 10px #34d399, 0 0 20px #34d399; }
+  50% { box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6; }
+  75% { box-shadow: 0 0 10px #facc15, 0 0 20px #facc15; }
+  100% { box-shadow: 0 0 10px #f472b6, 0 0 20px #f472b6; }
+}
+.img-btn.glow {
+  animation: glow 1.5s infinite alternate;
+}
+
+/* End Screen */
+#endScreen{
+  display:none;
+  width:100%; max-width:700px;
+  background:linear-gradient(135deg,#a5b4fc,#c7d2fe);
+  border-radius:20px;
+  padding:20px;
+  text-align:center;
+  color:#1f2937;
+}
+#endTitle { font-size:3em; color:#f472b6; text-align:center; margin-bottom:10px; }
+#endMessage { font-size:2.5em; color:#34d399; text-align:center; margin-bottom:20px; word-wrap: break-word; }
+#finalScore{font-size:3em; font-weight:bold; margin-bottom:20px; color:#d946ef; text-align:center; }
+#playAgainBtn{
+  padding:15px 40px; font-size:22px;
+  background:linear-gradient(90deg,#38bdf8,#0ea5e9); color:#0f172a; border:none; border-radius:12px; cursor:pointer; font-weight:bold;
+}
+#playAgainBtn:hover{transform:translateY(-3px);}
+
+/* Balloon canvas */
+#balloonCanvas{
+  position:absolute; top:0; left:0; pointer-events:none; z-index:0; width:100%; height:100%;
+}
+</style>
+</head>
+<body>
+
+<div id="brand">🎉Junior English - 113 Lê Trọng Tấn, Đà Nẵng - 0935.994359🎉</div>
+
+<audio id="bg-music" src="sound/background music.mp3" loop></audio>
+<audio id="correctSound" src="sound/true.mp3" preload="auto"></audio>
+
+<!-- Welcome Screen -->
+<div id="welcomeScreen">
+  <h2>🎉 Junior English chào mừng các em 🎉</h2>
+  <input type="text" id="studentName" placeholder="Nhập tên em...">
+  <button id="startBtn">Bắt đầu</button>
+</div>
+
+<!-- Game Area -->
+<div id="gameArea">
+  <div id="scoreBoard">Điểm: 0 / 0</div>
+  <audio id="pronounce" src=""></audio>
+  <button id="listenBtn">Nghe lại</button>
+  <div id="imageOptions"></div>
+  <div id="message"></div>
+</div>
+
+<!-- End Screen -->
+<div id="endScreen">
+  <div id="endTitle">🎉 Junior English 🎉</div>
+  <div id="endMessage"></div>
+  <div id="finalScore"></div>
+  <button id="playAgainBtn">Chơi lại</button>
+</div>
+
+<canvas id="balloonCanvas"></canvas>
+
+<script>
+const juniorword = ['building','cap','helmet','map','noisy','quick','quiet','racket','road','shopping centre','slow','tall','thousand','ticket'];
+let words=[],currentWord="",score=0,total=0,studentName="";
+const IMAGE_FOLDER="flashcard/",RECORDING_FOLDER="recording/";
+const bgMusic=document.getElementById("bg-music");
+document.body.addEventListener("click",()=>{bgMusic.volume=0.5;bgMusic.play().catch(e=>console.log("Nhạc bị chặn"));},{once:true});
+
+
+function randomColor(){
+  const colors = ['#FFADAD','#FFD6A5','#FDFFB6','#CAFFBF','#9BF6FF','#A0C4FF','#BDB2FF','#FFC6FF'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+
+// Balloon
+const canvas=document.getElementById("balloonCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+let balloons=[];
+function createBalloon(){ balloons.push({x:Math.random()*canvas.width,y:canvas.height+50,radius:20+Math.random()*15,color:`hsl(${Math.random()*360},80%,60%)`,speed:1+Math.random()*2});}
+function animateBalloons(){ctx.clearRect(0,0,canvas.width,canvas.height);balloons.forEach((b,i)=>{b.y-=b.speed;ctx.beginPath();ctx.arc(b.x,b.y,b.radius,0,2*Math.PI);ctx.fillStyle=b.color;ctx.fill();ctx.strokeStyle="#fff";ctx.stroke();if(b.y+b.radius<0) balloons.splice(i,1);});requestAnimationFrame(animateBalloons);}
+function launchBalloons(){const interval=setInterval(()=>{createBalloon();},200);setTimeout(()=>clearInterval(interval),3000);animateBalloons();}
+launchBalloons();
+window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+// Start Game
+document.getElementById("startBtn").onclick=()=>{
+  studentName=document.getElementById("studentName").value.trim();
+  if(!studentName) {alert("Vui lòng nhập tên trước khi chơi!"); return;}
+  document.getElementById("welcomeScreen").style.display="none";
+  document.getElementById("gameArea").style.display="block";
+  words=[...juniorword];
+  score=0; total=juniorword.length;
+  updateScoreBoard();
+  loadRound();
+};
+
+// Listen button
+document.getElementById("listenBtn").onclick=()=>{playPronounce();};
+function playPronounce(){ const audio=document.getElementById("pronounce"); audio.currentTime=0; audio.play().catch(e=>console.log("Phát âm bị chặn"));}
+
+// Load new round
+function loadRound(){
+  const imageDiv=document.getElementById("imageOptions");
+  const msg=document.getElementById("message");
+  msg.textContent="";
+  if(words.length===0){showEndScreen();return;}
+  currentWord=words[Math.floor(Math.random()*words.length)];
+  let options=[currentWord];
+  while(options.length<4){let r=juniorword[Math.floor(Math.random()*juniorword.length)];if(!options.includes(r)) options.push(r);}
+  shuffle(options);
+  imageDiv.innerHTML="";
+options.forEach(opt=>{
+  let div=document.createElement("div");
+  div.className="img-btn";
+
+  div.style.background = randomColor();     // 🌈 màu ngẫu nhiên
+  div.style.padding = "10px";
+  div.style.borderRadius = "15px";
+  div.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+
+div.innerHTML=`<img src="${IMAGE_FOLDER}${opt}.png" alt="${opt}" 
+onerror="this.onerror=null;this.src='${IMAGE_FOLDER}${opt}.jpg';" 
+style="width:80%;border-radius:10px;display:block;margin:5px auto;">
+<div class="wordLabel"></div>`;
+
+  div.onclick=()=>checkAnswer(opt,div);
+  imageDiv.appendChild(div);
+});
+
+  document.getElementById("pronounce").src=RECORDING_FOLDER+currentWord+".mp3";
+  playPronounce();
+  imageDiv.style.pointerEvents="auto";
+}
+
+// Check answer (đã sửa lỗi teddy bear)
+function checkAnswer(selected,btn){
+  const imageDiv=document.getElementById("imageOptions");
+  const imgs=Array.from(document.getElementsByClassName("img-btn"));
+  const correctImg=imgs.find(i=>i.querySelector("img").alt===currentWord); // 🔥 sửa đúng 1 dòng
+  imageDiv.style.pointerEvents="none";
+
+  if(selected===currentWord){
+    btn.classList.add("correct","glow");
+    document.getElementById("correctSound").play(); // 🔊 phát âm thanh đúng
+    score++;
+    words=words.filter(w=>w!==currentWord);
+    updateScoreBoard();
+    setTimeout(()=>{btn.classList.remove("glow"); imageDiv.style.pointerEvents="auto";   loadRound();},1500);
+
+  } else {
+    imgs.forEach(i=>{if(i!==correctImg)i.classList.add("wrong");});
+    correctImg.classList.add("correct","glow");
+  //  correctImg.querySelector(".wordLabel").textContent=currentWord;
+    playPronounce();
+
+    setTimeout(()=>{
+      correctImg.classList.remove("glow");
+      words=words.filter(w=>w!==currentWord);
+      imageDiv.style.pointerEvents="auto";
+      loadRound();
+    },2000);
+  }
+}
+
+function updateScoreBoard(){document.getElementById("scoreBoard").textContent=`Điểm: ${score} / ${total}`;}
+
+function showEndScreen(){
+  document.getElementById("gameArea").style.display="none";
+  document.getElementById("endScreen").style.display="block";
+  document.getElementById("endMessage").textContent=`Chúc mừng ${studentName}!`;
+  document.getElementById("finalScore").textContent=`Điểm của em: ${score} / ${total}`;
+}
+
+// Play Again
+document.getElementById("playAgainBtn").onclick=()=>{
+  document.getElementById("endScreen").style.display="none";
+  document.getElementById("welcomeScreen").style.display="flex";
+  document.getElementById("studentName").value="";
+}
+
+// Shuffle helper
+function shuffle(array){for(let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[array[i],array[j]]=[array[j],array[i]];} return array;}
+</script>
+</body>
+</html>
